@@ -51,7 +51,7 @@ namespace WebRequest
                         StreamWriter sw = new StreamWriter(Program.count.ToString() + "-header.txt");
                         count++;
                         sw.WriteLine(s);
-                    Console.WriteLine(s);
+                        Console.WriteLine(s);
                         sw.Close();
 
 
