@@ -18,7 +18,7 @@ namespace WebRequest
         static void Main(string[] args)
         {
             Console.WriteLine("Enter a URL");
-            url = "https://www.amazon.com";
+            url = "https://www.udemy.com";
 
 
           Console.WriteLine(url);
@@ -54,6 +54,7 @@ namespace WebRequest
         {
             using (HttpClient httpclient = new HttpClient())
             {
+                httpclient.DefaultRequestHeaders.Add("User-Agent", "C# App");
 
                 using (HttpResponseMessage responce = await httpclient.GetAsync(Program.url))
                 {
@@ -63,15 +64,15 @@ namespace WebRequest
                         StreamWriter sw = new StreamWriter(Program.count.ToString() + "-header.txt");
                         count++;
                         sw.WriteLine(s);
-                        //Console.WriteLine(s);
+                        Console.WriteLine(s);
                         sw.Close();
                         string[] pieces = s.Split(' ');
                     int counter = 0;
-                    while (pieces[counter] != null)
+                    while (pieces.Length>=counter)
                     {
                         //Console.WriteLine("dhukse");
 
-                        if (pieces[counter].Contains("ookie")) {
+                        if (pieces[counter].Contains("Set-Cookie")) {
 
                             Program.coocie[count -1]= pieces[counter+1];
                             Console.WriteLine("\n\n\n" + pieces[counter + 1]);
