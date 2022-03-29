@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Web;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,7 +15,9 @@ namespace WebRequest
     {
         public static string url;
         public static int count = 1;
+        public static int count2 = 0;
         public static string[] coocie = new string[3];
+        public static string[] postInfo = new string[4];
         static void Main(string[] args)
         {
             Console.WriteLine("Enter a URL");
@@ -56,9 +59,33 @@ namespace WebRequest
             extractor();
 
             Console.ReadLine();
+            string userName="test";
+            string pass="test";
+            string[] key = { postInfo[1], postInfo[2], "submit" };
+            string[] values = { userName, pass, postInfo[3] };
+             
+            post2("http://192.168.0.108/ESAPI-Java-SwingSet-Interactive" + "/"+postInfo[0],key, values,1);
         }
 
-        
+        public static void post2(string url, string[] key, string[] value, int count)
+        {
+
+            StringBuilder postData = new StringBuilder();
+            for (int i = 0; i < key.Length; i++)
+            {
+                postData.Append(String.Format("{0}={1}&", HttpUtility.HtmlEncode(key[i]), HttpUtility.HtmlEncode(value[i])));
+            }
+
+            //  postData.Append(String.Format("{0}={1}", HttpUtility.HtmlEncode("password"), HttpUtility.HtmlEncode("123456789")));
+            StringContent myStringContent = new StringContent(postData.ToString(), Encoding.UTF8, "application/x-www-form-urlencoded");
+            HttpClient client = new HttpClient();
+            HttpResponseMessage message = client.PostAsync(url, myStringContent).GetAwaiter().GetResult();
+            string responseContent = message.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            StreamWriter sw = new StreamWriter(count.ToString() + "-postresponce.txt");
+            sw.WriteLine(responseContent);
+            Console.WriteLine(responseContent);
+            sw.Close();
+        }
 
 
 
@@ -167,7 +194,10 @@ namespace WebRequest
                     else
                     {
                         //Console.WriteLine(co);
+                        postInfo[count2] = a;
+                        count2++;
                         return a;
+
                     }
 
 
