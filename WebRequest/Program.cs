@@ -21,7 +21,7 @@ namespace WebRequest
         static void Main(string[] args)
         {
             Console.WriteLine("Enter a URL");
-            url = "http://192.168.0.108/ESAPI-Java-SwingSet-Interactive/main?function=InsecureLogin&lab";
+            url = "http://192.168.0.108/dvwa/login.php";
 
 
           Console.WriteLine(url);
@@ -56,18 +56,23 @@ namespace WebRequest
             
             }
             Console.ReadLine();
-            extractor();
+            Support.extractor();
 
             Console.ReadLine();
-            string userName="test";
-            string pass="test";
-            string[] key = { postInfo[1], postInfo[2], "submit" };
+            string userName="admin";
+            string pass="admin";
+            string[] key = { postInfo[1], postInfo[2], "Login" };
             string[] values = { userName, pass, postInfo[3] };
-             
-            post2("http://192.168.0.108/ESAPI-Java-SwingSet-Interactive" + "/"+postInfo[0],key, values,1);
+
+
+        
+
+           //  post2("http://192.168.0.108/ESAPI-Java-SwingSet-Interactive" + "/"+postInfo[0],key, values,1);
+
+            post("http://192.168.0.108/dvwa/login.php", key, values, 1);
         }
 
-        public static void post2(string url, string[] key, string[] value, int count)
+        public static void post(string url, string[] key, string[] value, int count)
         {
 
             StringBuilder postData = new StringBuilder();
@@ -92,6 +97,8 @@ namespace WebRequest
 
         public static async void getMethod()
         {
+            int cc = count;
+            count++;
             using (HttpClient httpclient = new HttpClient())
             {
                 httpclient.DefaultRequestHeaders.Add("User-Agent", "C# App");
@@ -105,7 +112,7 @@ namespace WebRequest
                         {
                         string text = await content.ReadAsStringAsync();
 
-                        StreamWriter sw = new StreamWriter(count.ToString() + "-content.txt");
+                        StreamWriter sw = new StreamWriter(cc.ToString() + "-content.txt");
                         sw.WriteLine(text);
                         Console.WriteLine(text);
                         sw.Close();
@@ -113,13 +120,13 @@ namespace WebRequest
                          }
 
                     string s = header.ToString();
-                        StreamWriter headerWriter = new StreamWriter(count.ToString() + "-header.txt");
+                        StreamWriter headerWriter = new StreamWriter(cc.ToString() + "-header.txt");
                         count++;
                         headerWriter.WriteLine(s);
                        //Console.WriteLine(s);
                         headerWriter.Close();
 
-                    StreamWriter bodyWriter = new StreamWriter(count.ToString() + "-body.txt");
+                    StreamWriter bodyWriter = new StreamWriter(cc.ToString() + "-body.txt");
                      
                     bodyWriter.Close(); 
                         string[] pieces = s.Split(' ');
@@ -130,7 +137,7 @@ namespace WebRequest
 
                              if (pieces[counter].Contains("Set-Cookie")) {
 
-                            coocie[count -1]= pieces[counter+1];
+                            coocie[cc - 1]= pieces[counter+1];
                             Console.WriteLine("\n\n\n" + pieces[counter + 1]);
                             break;
 
@@ -152,152 +159,12 @@ namespace WebRequest
 
 
 
-        public static void coocieExtractor() {
-
-            StreamReader reader = new StreamReader(Program.count.ToString() + "-header.txt");
-            int inCount = count;
-            count++;
-            while (!reader.EndOfStream)
-            {   
-                string line = reader.ReadLine();    
-
-                if (line.Contains("oocie"))
-                {
-
-                    Program.coocie[inCount] = reader.ReadLine();
-                    break;
-                }
-
-            }
         
-        }
 
 
 
 
-        public static string purifier(string value)
-        {
-
-
-            int start = 0;
-            string a = "";
-            char[] b = value.ToCharArray();
-            foreach (char c in b)
-            {
-
-                if (c == '"')
-                {
-                    if (start == 0)
-                    {
-                        start++;
-                    }
-                    else
-                    {
-                        //Console.WriteLine(co);
-                        postInfo[count2] = a;
-                        count2++;
-                        return a;
-
-                    }
-
-
-                }
-                else
-                {
-
-                    if (start > 0)
-                    {
-                        a = a + c.ToString();
-
-                    }
-
-                }
-
-            }
-
-
-            return "dsad";
-        }
-        public static string extractor()
-        {
-
-            StreamReader reader = new StreamReader("1-content.txt");
-            string action;
-            string[] user = new string[4];
-            int count = 0;
-            while (!reader.EndOfStream)
-            {
-                string tester = reader.ReadLine();
-                if (tester.Contains("form"))
-                {
-                    string[] pieces = tester.Split(' ');
-                    foreach (string prs in pieces)
-                    {
-                        if (prs.Contains("action"))
-                        {
-
-                            //int end = prs.Length;
-                            //end -= 2;
-                            //string ac = prs.Substring(8);
-                            //action = ac.Remove(ac.Length - 1);
-                            //Console.WriteLine(action);
-                            Console.WriteLine(purifier(prs));
-                            break;
-                        }
-
-                    }
-
-
-                }
-                if (tester.Contains("input"))
-                {
-                    string[] pieces = tester.Split(' ');
-                    foreach (string prs in pieces)
-                    {
-                        if (prs.Contains("name="))
-                        {
-
-                            //int end = prs.Length;
-                            //end -= 2;
-                            //string ac = prs.Substring(6);
-                            //user[count]= ac.Remove(ac.Length - 1);
-                            //Console.WriteLine(user[count]);
-                            Console.WriteLine(purifier(prs));
-                            count++;
-
-
-
-                        }
-                        if (prs.Contains("value") && count == 2)
-                        {
-                            //Console.WriteLine(prs);
-                            //int end = prs.Length;
-                            //end -= 2;
-                            //string ac = prs.Substring(7);
-                            //user[count] = ac.Remove(ac.Length - 1);
-
-                            //if (user[count].Contains("\"")){
-                            //    user[count] = user[count].Remove(user[count].Length - 1);
-                            //}
-
-
-
-
-                            //Console.WriteLine(user[count]);
-                            Console.WriteLine(purifier(prs));
-                            break;
-                        }
-
-
-                    }
-
-
-                }
-            }
-
-
-            return "not implimented";
-        }
+       
 
 
 
