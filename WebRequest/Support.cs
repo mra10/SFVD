@@ -10,24 +10,27 @@ namespace WebRequest
     internal class Support
     {
 
-        public static void coocieExtractor()
+        public static string coocieExtractor(string fileName)
         {
 
-            StreamReader reader = new StreamReader(Program.count.ToString() + "-header.txt");
+            StreamReader reader = new StreamReader(fileName);
             int inCount = Program.count;
             Program.count++;
             while (!reader.EndOfStream)
             {
                 string line = reader.ReadLine();
 
-                if (line.Contains("oocie"))
+                if (line.Contains("Set-Cookie"))
                 {
-
-                    Program.coocie[inCount] = reader.ReadLine();
-                    break;
+                    string[] parts = line.Split(' ');
+                    string coocie  = parts[1];
+                    reader.Close();
+                    return coocie;
+                   
                 }
 
             }
+            return "NOT FOUND";
 
         }
         public static string extractor()
