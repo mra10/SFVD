@@ -13,7 +13,7 @@ namespace WebRequest
 {
     internal class Program
     {
-        public static string url;
+        public static string aep;
         public static int count = 1;
         public static int count2 = 0;
         public static HttpClient client1;
@@ -23,12 +23,12 @@ namespace WebRequest
         static void Main(string[] args)
         {
 
-            Console.WriteLine("Enter a URL");
-            url = "http://192.168.0.108/ESAPI-Java-SwingSet-Interactive/main?function=InsecureLogin&lab";
+            Console.WriteLine("Enter a aep");
+            aep = "http://192.168.93.128/ESAPI-Java-SwingSet-Interactive/main?function=InsecureLogin&lab";
 
 
-
-            Console.WriteLine(url);
+            
+            Console.WriteLine(aep);
             Thread t = new Thread(getMethod);
             Thread t1 = new Thread(getMethod);
             t1.Start();
@@ -78,7 +78,7 @@ namespace WebRequest
             Console.ReadLine();
         }
 
-        public static void post(string url, string[] key, string[] value, int cnt, HttpClient client)
+        public static void post(string aep, string[] key, string[] value, int cnt, HttpClient client)
         {
 
             StringBuilder postData = new StringBuilder();
@@ -88,9 +88,9 @@ namespace WebRequest
             }
 
             //  postData.Append(String.Format("{0}={1}", HttpUtility.HtmlEncode("password"), HttpUtility.HtmlEncode("123456789")));
-            StringContent myStringContent = new StringContent(postData.ToString(), Encoding.UTF8, "application/x-www-form-urlencoded");
+            StringContent myStringContent = new StringContent(postData.ToString(), Encoding.UTF8, "application/x-www-form-aepencoded");
             // HttpClient client = new HttpClient();
-            HttpResponseMessage message = client.PostAsync(url, myStringContent).GetAwaiter().GetResult();
+            HttpResponseMessage message = client.PostAsync(aep, myStringContent).GetAwaiter().GetResult();
             string responseContent = message.Content.ReadAsStringAsync().GetAwaiter().GetResult();
             string header = message.Headers.ToString();
             Console.WriteLine("post" + header);
@@ -147,7 +147,7 @@ namespace WebRequest
                 httpclient.DefaultRequestHeaders.Add("User-Agent", "C# App");
                 Console.WriteLine(httpclient);
 
-                using (HttpResponseMessage responce = await httpclient.GetAsync(Program.url))
+                using (HttpResponseMessage responce = await httpclient.GetAsync(Program.aep))
                 {
 
                     var header = responce.Headers;
@@ -169,9 +169,9 @@ namespace WebRequest
                     //Console.WriteLine(s);
                     headerWriter.Close();
 
-                    StreamWriter bodyWriter = new StreamWriter(cc.ToString() + "-body.txt");
+                    //StreamWriter bodyWriter = new StreamWriter(cc.ToString() + "-body.txt");
 
-                    bodyWriter.Close();
+                    //bodyWriter.Close();
                     //    string[] pieces = s.Split(' ');
                     //     int counter = 0;
                     //     while (pieces.Length>=counter)
@@ -204,7 +204,7 @@ namespace WebRequest
                 Console.ReadLine();
                 string userName = "test";
                 string pass = "test";
-                string[] key = { postInfo[1], postInfo[2], "Submit" };
+                string[] key = { postInfo[1], postInfo[2], "submit" };
                 string[] values = { userName, pass, postInfo[3] };
 
                 if (cc == 1)
@@ -216,7 +216,7 @@ namespace WebRequest
 
                 //  post2("http://192.168.0.108/ESAPI-Java-SwingSet-Interactive" + "/"+postInfo[0],key, values,1);
 
-                post("http://192.168.0.108/ESAPI-Java-SwingSet-Interactive/LoginServletLab", key, values, 1, httpclient);
+                post("http://192.168.93.128/ESAPI-Java-SwingSet-Interactive/LoginServletLab", key, values, 1, httpclient);
 
 
 
@@ -238,7 +238,7 @@ namespace WebRequest
 
                 //  post2("http://192.168.0.108/ESAPI-Java-SwingSet-Interactive" + "/"+postInfo[0],key, values,1);
 
-                post("http://192.168.0.108/ESAPI-Java-SwingSet-Interactive/LoginServletLab", key, values, 2, httpclient);
+                post("http://192.168.93.128/ESAPI-Java-SwingSet-Interactive/LoginServletLab", key, values, 2, httpclient);
                 Console.ReadLine();
 
                 }

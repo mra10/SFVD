@@ -31,7 +31,6 @@ namespace WebRequest
 
             }
             return "NOT FOUND";
-
         }
         public static string extractor()
         {
@@ -101,6 +100,7 @@ namespace WebRequest
                             //Console.WriteLine(user[count]);
                             Console.WriteLine(purifier(prs));
                             break;
+
                         }
 
 
