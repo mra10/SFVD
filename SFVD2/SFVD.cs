@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace SFVD2
 {
@@ -21,7 +22,13 @@ namespace SFVD2
             CrawlerAndAEP crawler = new CrawlerAndAEP();
             string aep = crawler.crawl(url);
             Attack attack = new Attack(url, user, pass);
-            attack.getMethod();
+            Attack attack1 = new Attack(url, user, pass);
+            Thread t1 = new Thread(attack.getMethod);
+            Thread t2 = new Thread(attack1.getMethod);
+            t1.Start();
+            t2.Start();
+            t1.Join();
+            t2.Join(); 
             Console.ReadLine();
             Console.WriteLine(attack.postURlmaker());
             Console.ReadLine();

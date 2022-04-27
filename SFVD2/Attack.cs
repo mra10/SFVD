@@ -13,7 +13,7 @@ namespace SFVD2
     internal class Attack
     {
         public string[] coocie = new string[5];
-        public int count = 1;
+        public static int count = 1;
         public int count2 = 0;
         public string user;
         public string aep;
@@ -38,7 +38,13 @@ namespace SFVD2
 
             using (HttpClient httpclient = new HttpClient())
             {
-                httpclient.DefaultRequestHeaders.Add("User-Agent", "C# App");
+                if (cc == 1)
+                {
+                    httpclient.DefaultRequestHeaders.Add("User-Agent", "C# App");
+                }
+                else {
+                    httpclient.DefaultRequestHeaders.Add("User-Agent", "Java App");
+                }
                 Console.WriteLine(httpclient);
 
                 using (HttpResponseMessage responce = await httpclient.GetAsync(aep))
@@ -81,7 +87,7 @@ namespace SFVD2
                 //    post("http://192.168.0.108/ESAPI-Java-SwingSet-Interactive/LoginServletLab", key, values, 2, httpclient);
                 //    Console.ReadLine();
                 //}
-                    string postheader = post(loginURL, key, values, 1, httpclient);
+                    string postheader = post(loginURL, key, values, cc, httpclient);
                     StreamWriter writ = new StreamWriter("1-postheader.txt");
                     writ.WriteLine(postheader);
                     writ.Close();
@@ -93,7 +99,7 @@ namespace SFVD2
 
         public static string post(string url, string[] key, string[] value, int count,HttpClient client)
         {
-
+            
             StringBuilder postData = new StringBuilder();
             for (int i = 0; i < key.Length; i++)
             {
