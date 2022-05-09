@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.IO;
 
 namespace SFVD2
 {
@@ -12,6 +13,7 @@ namespace SFVD2
         static void Main(string[] args)
         {
             string url,user,pass;
+            string[] coocies = new string[6];
 
             Console.WriteLine("Enter A aep :");
             url = Console.ReadLine();
@@ -33,7 +35,26 @@ namespace SFVD2
             Console.WriteLine(attack.postURlmaker());
             Console.ReadLine();
             Analyzer analyzer = new Analyzer();
-            analyzer.analysis(attack.coocie[0],attack.coocie[1]);
+            analyzer.analysis(attack.coocie[0],attack.coocie[2]);
+            StreamWriter writ = new StreamWriter("coocies.txt");
+            StreamReader reader = new StreamReader("1-beforecoocie.txt");
+            coocies[0] = reader.ReadToEnd();
+            reader.Close();
+            reader = new StreamReader("2-beforecoocie.txt");
+            coocies[1] = reader.ReadToEnd();
+            reader.Close();
+            reader = new StreamReader("1-aftercoocie.txt");
+            coocies[2] = reader.ReadToEnd();
+            reader.Close();
+            reader = new StreamReader("2-aftercoocie.txt");
+            coocies[3] = reader.ReadToEnd();
+            reader.Close();
+            foreach (var item in coocies)
+            {
+                Console.WriteLine(item);
+            }
+
+            writ.Close();
             Console.ReadLine();
         }
     }

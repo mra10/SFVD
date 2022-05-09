@@ -13,6 +13,7 @@ namespace SFVD2
     internal class Attack
     {
         public string[] coocie = new string[5];
+        public string[] afterCoocie = new string[5];
         public static int count = 1;
         public int count2 = 0;
         public string user;
@@ -27,8 +28,11 @@ namespace SFVD2
             pass = passWord;
 
             aep = url;
-        
-        
+
+            coocie[0] = "ksladk";
+            afterCoocie[0] = "fdlsd";
+
+
         }
         
         public async void getMethod()
@@ -61,20 +65,23 @@ namespace SFVD2
 
                     }
                     string s = header.ToString();
-                    StreamWriter headerWriter = new StreamWriter(cc.ToString() + "-header.txt");
+                    StreamWriter headerWrite = new StreamWriter(cc.ToString() + "-header.txt");
                     count++;
-                    headerWriter.WriteLine(s);
+                    headerWrite.WriteLine(s);
                     
-                    headerWriter.Close();
+                    headerWrite.Close();
 
-                    coocie[cc - 1] = coocieExtractor(cc.ToString() + "-header.txt");
-                    Console.WriteLine("\n\n\n" + coocie[cc - 1]);
+                    coocie[cc ] = coocieExtractor(cc.ToString() + "-header.txt");
+                    StreamWriter headerWrit = new StreamWriter(cc.ToString() + "-beforecoocie.txt");
+                    headerWrit.WriteLine(coocie[cc]);
+                    headerWrit.Close();
+                    Console.WriteLine("\n\n\n"+cc.ToString()+"   "+  coocie[cc ]);
                 }
 
                 extractor();
                 Console.ReadLine();
                 
-                string[] key = { postInfo[1], postInfo[2], "Login" };
+                string[] key = { postInfo[1], postInfo[2], "Submit" };
                 string[] values = { user, pass, postInfo[3] };
                 string loginURL = postURlmaker();
                 //if (cc == 1)
@@ -88,11 +95,14 @@ namespace SFVD2
                 //    Console.ReadLine();
                 //}
                     string postheader = post(loginURL, key, values, cc, httpclient);
-                    StreamWriter writ = new StreamWriter("1-postheader.txt");
+                    StreamWriter writ = new StreamWriter(cc.ToString()+"-postheader.txt");
                     writ.WriteLine(postheader);
                     writ.Close();
-                    string aftercoocie =  coocieExtractor("1-postheader.txt");
-                    coocie[1] = aftercoocie;
+                    string aftercoocie =  coocieExtractor(cc.ToString()+"-postheader.txt");
+                    afterCoocie[cc] = aftercoocie;
+                   StreamWriter headerWriter = new StreamWriter(cc.ToString() + "-aftercoocie.txt");
+                    headerWriter.WriteLine(aftercoocie);
+                    headerWriter.Close();
 
             }
         }
