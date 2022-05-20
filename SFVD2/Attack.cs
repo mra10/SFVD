@@ -103,8 +103,45 @@ namespace SFVD2
                    StreamWriter headerWriter = new StreamWriter(cc.ToString() + "-aftercoocie.txt");
                     headerWriter.WriteLine(aftercoocie);
                     headerWriter.Close();
+                    int len =  aftercoocie.Length;
+                    
+                     if (cc == 1)
+                     {
+                        httpclient.DefaultRequestHeaders.Add("Cookie", aftercoocie+"8");
+                        afterGet(httpclient , loginURL,cc);
+                     }
+                     else
+                     {
+                        httpclient.DefaultRequestHeaders.Add("Cookie", aftercoocie + "3");
+                        afterGet(httpclient, loginURL,cc);
+                }
 
             }
+        }
+
+        public async void afterGet(HttpClient httpclient, string link,int cc) {
+
+
+            using (HttpResponseMessage responce = await httpclient.GetAsync(aep))
+            {
+                var header = responce.Headers;
+                using (HttpContent content = responce.Content)
+                {
+                    string text = await content.ReadAsStringAsync();
+
+                    StreamWriter sw = new StreamWriter(cc.ToString() + "after-content.txt");
+                    sw.WriteLine(text);
+                    Console.WriteLine(text);
+                    sw.Close();
+
+                }
+                
+            }
+
+
+
+
+
         }
 
         public static string post(string url, string[] key, string[] value, int count,HttpClient client)
