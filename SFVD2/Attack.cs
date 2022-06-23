@@ -100,51 +100,69 @@ namespace SFVD2
                     writ.Close();
                     string aftercoocie =  coocieExtractor(cc.ToString()+"-postheader.txt");
                     afterCoocie[cc] = aftercoocie;
-                   StreamWriter headerWriter = new StreamWriter(cc.ToString() + "-aftercoocie.txt");
+                    StreamWriter headerWriter = new StreamWriter(cc.ToString() + "-aftercoocie.txt");
                     headerWriter.WriteLine(aftercoocie);
                     headerWriter.Close();
                     int len =  aftercoocie.Length;
                     
-                     if (cc == 1)
-                     {
-                        httpclient.DefaultRequestHeaders.Add("Cookie", aftercoocie+"8");
-                        afterGet(httpclient , loginURL,cc);
-                     }
-                     else
-                     {
-                        httpclient.DefaultRequestHeaders.Add("Cookie", aftercoocie + "3");
-                        afterGet(httpclient, loginURL,cc);
-                }
+                //     if (cc == 1)
+                //     {
+                //        httpclient.DefaultRequestHeaders.Add("Cookie", aftercoocie+"8");
+                //        afterGet(httpclient , loginURL,cc);
+                //     }
+                //     else
+                //     {
+                //        httpclient.DefaultRequestHeaders.Add("Cookie", aftercoocie + "3");
+                //        afterGet(httpclient, loginURL,cc);
+                //}
 
             }
         }
 
-        public async void afterGet(HttpClient httpclient, string link,int cc) {
-
-
-            using (HttpResponseMessage responce = await httpclient.GetAsync(aep))
+        public async void afterGet(HttpClient httpclien, string link,int cc) 
+        {
+            try
             {
+                HttpResponseMessage responce = await httpclien.GetAsync(link);
                 var header = responce.Headers;
                 using (HttpContent content = responce.Content)
                 {
                     string text = await content.ReadAsStringAsync();
-
                     StreamWriter sw = new StreamWriter(cc.ToString() + "after-content.txt");
                     sw.WriteLine(text);
                     Console.WriteLine(text);
                     sw.Close();
-
                 }
-                
+               
+                StreamWriter sww = new StreamWriter(cc.ToString() + "after-header.txt");
+                sww.WriteLine(header.ToString());
+                Console.WriteLine(header.ToString());
+                sww.Close();
+
+                responce.Dispose();
             }
+            catch(OperationCanceledException exx)
+            {
+                Console.WriteLine(exx.Message);
+            }
+            
 
-
-
-
-
+            //httpclien.Timeout = TimeSpan.FromMinutes(40);
+            //using (HttpResponseMessage responce = await httpclien.GetAsync(link))
+            //{
+            //    var header = responce.Headers;
+            //    using (HttpContent content = responce.Content)
+            //    {
+            //        string text = await content.ReadAsStringAsync();
+            //        StreamWriter sw = new StreamWriter(cc.ToString() + "after-content.txt");
+            //        sw.WriteLine(text);
+            //        Console.WriteLine(text);
+            //        sw.Close();
+            //    } 
+            //}
         }
 
-        public static string post(string url, string[] key, string[] value, int count,HttpClient client)
+        public string post(string url, string[] key, string[] value, int count,HttpClient client)
         {
             
             StringBuilder postData = new StringBuilder();
@@ -163,6 +181,8 @@ namespace SFVD2
             StreamWriter sw = new StreamWriter(count.ToString() + "-postresponce.txt");
             sw.WriteLine(responseContent);
             sw.Close();
+            //this.afterGet(client, url, count);
+           // this.afterGet(client, "http://192.168.93.128/ESAPI-Java-SwingSet-Interactive/main?function=SessionFixation&solution", count);
             return header;
 
         }
